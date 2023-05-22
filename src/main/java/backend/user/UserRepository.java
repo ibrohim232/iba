@@ -19,26 +19,19 @@ public class UserRepository extends BaseRepository<User, UUID> {
     }
 
     @Override
+    protected String getFileName() {
+        return null;
+    }
+
+    @Override
     protected List<User> getList() {
         return users;
     }
 
-    public static UserRepository getInstance() throws IOException {
+    public static UserRepository getInstance() {
         if (userRepository == null) {
             userRepository = new UserRepository();
         }
-        Path of = Path.of("backend.user.User.txt");
-        Stream<Path> walk = Files.walk(of.getParent());
-        AtomicReference<Path> path = new AtomicReference<>(Path.of(""));
-        walk.filter(walk1 ->{
-            if (walk1.equals(of)) {
-                path.set(walk1);
-            }
-            return true;
-        });
-
-
-
         return userRepository;
     }
 

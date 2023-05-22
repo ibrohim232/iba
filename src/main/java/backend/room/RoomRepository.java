@@ -17,6 +17,11 @@ public class RoomRepository extends BaseRepository<Room, UUID>
     }
 
     @Override
+    protected String getFileName() {
+        return null;
+    }
+
+    @Override
     protected List<Room> getList()
     {
         return rooms;

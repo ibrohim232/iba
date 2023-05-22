@@ -15,7 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class User extends BaseEntity<UUID>
 {
-    private UserType userType;
+    private  UserType userType;
     private String name;
     private BigDecimal balance;
     private byte[] password;
