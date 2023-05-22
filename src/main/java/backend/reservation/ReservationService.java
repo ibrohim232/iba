@@ -12,6 +12,7 @@ import backend.user.UserRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -38,8 +39,25 @@ public class ReservationService {
     }
 
     public ReservationResponseDTO creat(ReservationCreatDTO reservationCreatDTO) {
-        return null;
+        User user = userRepository.findById(reservationCreatDTO.getUserId());
+        Room room = roomRepository.findById(reservationCreatDTO.getRoomId());
+        Hotel hotel = hotelRepository.findById(reservationCreatDTO.getHotelId());
+        if (user == null || room == null || hotel == null) {
+            return null;
+        }
+        BigDecimal bigDecimal = roomService.calculateRoomPrice(reservationCreatDTO.getRoomId(), reservationCreatDTO.getFromDate(), reservationCreatDTO.getToDate());
 
+        Reservation reservation = new Reservation();
+        reservation.setId(UUID.randomUUID());
+        reservation.setRoomId(reservationCreatDTO.getRoomId());
+        reservation.setUserId(reservationCreatDTO.getUserId());
+        reservation.setHotelId(reservationCreatDTO.getHotelId());
+        reservation.setPrice(bigDecimal);
+        reservation.setToDate(reservationCreatDTO.getToDate());
+        reservation.setFromDate(reservationCreatDTO.getFromDate());
+        reservation.setUpdated(LocalDateTime.now());
+        reservation.setCreated(LocalDateTime.now());
+        return new ReservationResponseDTO(reservation);
     }
 
 }
