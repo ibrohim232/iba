@@ -6,7 +6,6 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 
 public abstract class BaseRepository<ENTITY extends BaseEntity<ID>, ID> implements Repository<ENTITY, ID> {
-    protected abstract String getFileName();
     protected abstract List<ENTITY> getList();
     @Override
     public ENTITY save(ENTITY entity)  {

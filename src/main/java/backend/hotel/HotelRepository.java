@@ -16,15 +16,9 @@ import java.util.UUID;
 public class HotelRepository extends BaseRepository<Hotel, UUID> {
     private static List<Hotel> hotels;
     private static HotelRepository hotelRepository;
-    private static String FILE_NAME = "hotel.txt";
 
     private HotelRepository() {
 
-    }
-
-    @Override
-    protected String getFileName() {
-        return FILE_NAME;
     }
 
     @Override

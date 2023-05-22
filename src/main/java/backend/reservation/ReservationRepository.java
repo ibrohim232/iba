@@ -16,10 +16,6 @@ public class ReservationRepository extends BaseRepository<Reservation, UUID>
     {
     }
 
-    @Override
-    protected String getFileName() {
-        return null;
-    }
 
     @Override
     protected List<Reservation> getList()

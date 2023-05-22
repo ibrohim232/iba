@@ -19,11 +19,6 @@ public class UserRepository extends BaseRepository<User, UUID> {
     }
 
     @Override
-    protected String getFileName() {
-        return null;
-    }
-
-    @Override
     protected List<User> getList() {
         return users;
     }
