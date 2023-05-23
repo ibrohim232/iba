@@ -2,6 +2,8 @@ package backend.reservation;
 
 import backend.common.BaseRepository;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -11,6 +13,7 @@ public class ReservationRepository extends BaseRepository<Reservation, UUID>
 
     private final List<Reservation> reservations = new ArrayList<>();
     private static ReservationRepository repository;
+    private static String file="src/backend/reservation/reservation.txt";
 
     private ReservationRepository()
     {
@@ -21,6 +24,19 @@ public class ReservationRepository extends BaseRepository<Reservation, UUID>
     protected List<Reservation> getList()
     {
         return reservations;
+    }
+
+    @Override
+    protected String getPath() {
+        File file1 = new File(file);
+        if(!file1.exists()){
+            try {
+                file1.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return file;
     }
 
     public static ReservationRepository getInstance()
