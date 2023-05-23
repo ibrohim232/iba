@@ -52,7 +52,6 @@ public class ReservationService {
             return null;
         }
 
-
         BigDecimal bigDecimal = roomService.calculateRoomPrice(reservationCreatDTO.getRoomId(), reservationCreatDTO.getFromDate(), reservationCreatDTO.getToDate());
         user.setBalance(user.getBalance().subtract(bigDecimal));
         Reservation reservation = new Reservation();
@@ -65,6 +64,7 @@ public class ReservationService {
         reservation.setFromDate(reservationCreatDTO.getFromDate());
         reservation.setUpdated(LocalDateTime.now());
         reservation.setCreated(LocalDateTime.now());
+        reservationRepository.save(reservation);
         return new ReservationResponseDTO(reservation);
     }
 
