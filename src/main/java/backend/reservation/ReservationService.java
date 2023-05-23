@@ -45,8 +45,16 @@ public class ReservationService {
         if (user == null || room == null || hotel == null) {
             return null;
         }
-        BigDecimal bigDecimal = roomService.calculateRoomPrice(reservationCreatDTO.getRoomId(), reservationCreatDTO.getFromDate(), reservationCreatDTO.getToDate());
+        if (!validateBalance(reservationCreatDTO)) {
+            return null;
+        }
+        if (!validateReservationDates(reservationCreatDTO)) {
+            return null;
+        }
 
+
+        BigDecimal bigDecimal = roomService.calculateRoomPrice(reservationCreatDTO.getRoomId(), reservationCreatDTO.getFromDate(), reservationCreatDTO.getToDate());
+        user.setBalance(user.getBalance().subtract(bigDecimal));
         Reservation reservation = new Reservation();
         reservation.setId(UUID.randomUUID());
         reservation.setRoomId(reservationCreatDTO.getRoomId());
@@ -58,6 +66,39 @@ public class ReservationService {
         reservation.setUpdated(LocalDateTime.now());
         reservation.setCreated(LocalDateTime.now());
         return new ReservationResponseDTO(reservation);
+    }
+
+    private boolean validateReservationDates(ReservationCreatDTO reservationCreateDto) {
+        LocalDate fromDate = reservationCreateDto.getFromDate();
+        LocalDate toDate = reservationCreateDto.getToDate();
+
+        if (fromDate.isAfter(toDate) || fromDate.isBefore(LocalDate.now())) {
+            return false;
+        }
+
+        List<Reservation> reservationsByRoomId = reservationRepository.getReservationsByRoomId(reservationCreateDto.getRoomId());
+
+        for (Reservation reservation : reservationsByRoomId) {
+            if (reservation.getFromDate().isAfter(fromDate) && reservation.getToDate().isBefore(fromDate)) {
+                return false;
+            }
+
+            if (reservation.getFromDate().isAfter(toDate) && reservation.getToDate().isBefore(toDate)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean validateBalance(ReservationCreatDTO reservationCreateDto) {
+        User user = userRepository.findById(reservationCreateDto.getUserId());
+
+        BigDecimal priceOfReservation = roomService.calculateRoomPrice(reservationCreateDto.getRoomId(), reservationCreateDto.getFromDate(), reservationCreateDto.getToDate());
+        if (user.getBalance().compareTo(priceOfReservation) >= 0) {
+            return true;
+        }
+        return false;
     }
 
 }
