@@ -11,6 +11,7 @@ public class ReservationRepository extends BaseRepository<Reservation, UUID>
 
     private final List<Reservation> reservations = new ArrayList<>();
     private static ReservationRepository repository;
+    private static String path="reservation.txt";
 
     private ReservationRepository()
     {
@@ -21,6 +22,11 @@ public class ReservationRepository extends BaseRepository<Reservation, UUID>
     protected List<Reservation> getList()
     {
         return reservations;
+    }
+
+    @Override
+    protected String getPath() {
+        return path;
     }
 
     public static ReservationRepository getInstance()

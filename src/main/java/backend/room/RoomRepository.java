@@ -11,6 +11,7 @@ public class RoomRepository extends BaseRepository<Room, UUID>
 {
     private final List<Room> rooms = new ArrayList<>();
     private static RoomRepository roomRepository;
+    private static String path="room.txt";
 
     private RoomRepository()
     {
@@ -21,6 +22,11 @@ public class RoomRepository extends BaseRepository<Room, UUID>
     protected List<Room> getList()
     {
         return rooms;
+    }
+
+    @Override
+    protected String getPath() {
+        return path;
     }
 
     public static RoomRepository getInstance()

@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 public class UserRepository extends BaseRepository<User, UUID> {
     private final List<User> users = new ArrayList<>();
     private static UserRepository userRepository;
+    private static String path="user.txt";
 
     private UserRepository() {
     }
@@ -21,6 +22,11 @@ public class UserRepository extends BaseRepository<User, UUID> {
     @Override
     protected List<User> getList() {
         return users;
+    }
+
+    @Override
+    protected String getPath() {
+        return path;
     }
 
     public static UserRepository getInstance() {

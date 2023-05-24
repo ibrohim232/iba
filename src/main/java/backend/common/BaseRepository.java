@@ -1,13 +1,24 @@
 package backend.common;
 
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.List;
 
 public abstract class BaseRepository<ENTITY extends BaseEntity<ID>, ID> implements Repository<ENTITY, ID> {
     protected abstract List<ENTITY> getList();
+
+    protected abstract String getPath();
+
     @Override
-    public ENTITY save(ENTITY entity)  {
-        getList().add( entity );
+    public ENTITY save(ENTITY entity) {
+        getList().add(entity);
+        try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(getPath()))) {
+            objectOutputStream.writeObject(entity);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return entity;
     }
 
