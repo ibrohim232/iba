@@ -22,7 +22,11 @@ public class ReservationService {
     private final UserRepository userRepository = UserRepository.getInstance();
     private final HotelRepository hotelRepository = HotelRepository.getInstance();
     private final RoomRepository roomRepository = RoomRepository.getInstance();
-    private final RoomService roomService = new RoomService();
+    private final RoomService roomService = RoomService.getInstance();
+    private static ReservationService reservationService=new ReservationService();
+
+    private ReservationService() {
+    }
 
     public ReservationResponseDTO findById(UUID id) {
         return new ReservationResponseDTO(reservationRepository.findById(id));
@@ -99,6 +103,10 @@ public class ReservationService {
             return true;
         }
         return false;
+    }
+
+    public static ReservationService getInstance() {
+        return reservationService;
     }
 
 }

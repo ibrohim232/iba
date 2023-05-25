@@ -16,6 +16,10 @@ import java.util.UUID;
 public class RoomService {
     private RoomRepository roomRepository = RoomRepository.getInstance();
     private HotelRepository hotelRepository = HotelRepository.getInstance();
+    private static RoomService roomService=new RoomService();
+
+   private RoomService() {
+    }
 
     public RoomResponseDTO creat(RoomCreatDTO roomCreatDTO) {
         Hotel hotel = hotelRepository.findById(roomCreatDTO.getHotelId());
@@ -96,4 +100,7 @@ public class RoomService {
         roomRepository.deleteById(id);
     }
 
+    public static RoomService getInstance() {
+        return roomService;
+    }
 }

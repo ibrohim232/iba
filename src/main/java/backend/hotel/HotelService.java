@@ -10,6 +10,10 @@ import java.util.UUID;
 
 public class HotelService {
     private HotelRepository hotelRepository = HotelRepository.getInstance();
+    private static HotelService hotelService = new HotelService();
+
+    private HotelService() {
+    }
 
     public HotelResponseDTO creat(HotelCreatDTO hotelCreatDTO) {
         Hotel hotel = new Hotel();
@@ -38,4 +42,9 @@ public class HotelService {
     public void delete(UUID id) {
         hotelRepository.deleteById(id);
     }
+
+    public static HotelService getInstance() {
+        return hotelService;
+    }
+
 }

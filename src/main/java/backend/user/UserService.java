@@ -14,6 +14,10 @@ import java.util.UUID;
 
 public class UserService {
     private UserRepository userRepository = UserRepository.getInstance();
+    private static UserService userService = new UserService();
+
+    private UserService() {
+    }
 
     public UserResponseDto singIn(String name, String password) {
         User user = userRepository.findUserByName(name);
@@ -70,6 +74,10 @@ public class UserService {
 
     public void delete(UUID id) {
         userRepository.getList().removeIf(user -> user.getId().equals(id));
+    }
+
+    public static UserService getInstance() {
+        return userService;
     }
 
 
